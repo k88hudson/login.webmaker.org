@@ -14,14 +14,16 @@ util        = require('util'),
 connect     = require('connect'),
 RedisStore  = require('connect-redis')(connect),
 application = require('./controllers/application'),
+User       = require('../models/user'),
 persona     = require("express-persona"),
-env         = require('../../config/environment');
+env         = require('../../config/environment'),
+route = require('./routes');
 
 var http = express();
 
 var redisStoreConfig = env.get('redis');
 
-redisStoreConfig.maxAge = (30).days
+redisStoreConfig.maxAge = (30).days;
 
 var sessionStore = new RedisStore(redisStoreConfig);
 
@@ -46,6 +48,8 @@ http.configure(function(){
 
   http.use(function (req, res, next) {
     res.removeHeader("X-Powered-By");
+    res.header( "Access-Control-Allow-Origin", "*" );
+    res.header( "Access-Control-Allow-Headers", "Content-Type" );
     next();
   });
 
@@ -53,7 +57,30 @@ http.configure(function(){
 });
 
 persona(http, {
-  audience: env.get('audience')
+  audience: env.get('audience'),
+  verifyResponse: function(err, req, res, email) {
+    var userInfo = {};
+
+    if (err) {
+      userInfo.status = "failure";
+      userInfo.reason = "you suck";
+    } else {
+      userInfo.status = "okay";
+      userInfo.email = email;
+    }
+
+    User.find( { "email" : email }, function (err, User) {
+      if (!User.length) {
+        userInfo.exists = false;
+      } else {
+        userInfo.exists = true;
+        userInfo.data = User[0];
+      }
+
+      res.send(userInfo);
+    });
+
+  } // end verify response
 });
 
 http.configure('development', function(){
@@ -64,17 +91,12 @@ http.configure('production', function(){
   http.use(express.errorHandler());
 });
 
-// HTTP Routes
-routes = {
-  site: require('./controllers/site')
-};
-
-http.get('/', routes.site.index);
-http.get('/signin', routes.site.signin);
-
 process.on('uncaughtException', function(err) {
   logger.error(err);
 });
+
+// HTTP Routes
+route(http);
 
 var port = env.get('port');
 http.listen(port);
