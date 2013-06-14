@@ -35,7 +35,7 @@
 }
 
 .webmaker-nav > li > a:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 #logo {
@@ -49,13 +49,15 @@
 .user-info {
   float: right;
   text-align: right;
+  height: 30px;
+  margin-top: 5px;
 }
 
 .user-info > li {
   float: left;
   border-right: none;
   height: 100%;
-  margin: 0.9em 0;
+  line-height: 30px;
   border-right: 1px solid #b5b7b8;
   &:last-child {
     border-right: none;
@@ -64,11 +66,12 @@
 
 .user-info button {
   border: none;
+  margin: 0;
   padding: 0 10px;
   background: transparent;
   font-family: "Open Sans", "Helvetica Neue", sans-serif;
   font-size: 13px;
-  line-height: 1.1;
+  line-height: 30px;
   color: #27AAE1;
   cursor: pointer;
   span {
@@ -95,13 +98,10 @@
 }
 
 .webmaker-nav .user {
-  position: relative;
-  padding-left: 36px;
+
   border-right: none;
   img {
-    position: absolute;
-    left: 0;
-    top: -0.4em;
+    vertical-align: middle;
     border-radius: 50%;
   }
 }
@@ -230,7 +230,27 @@ a:hover {
   .makes {
     display: block;
   }
+  #webmaker-logout {
+    display: block;
+  }
+  #webmaker-login {
+    display: none;
+  }
 }
+
+#persona-btn {
+  position: relative;
+}
+
+#persona-iframe {
+  border: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 /*********************************************************
 * My projects
 */
@@ -257,20 +277,4 @@ a:hover {
 
 .my-projects-title.hidden {
   display: none;
-}
-/*********************************************************
-* iframe styling
-*/
-#webmaker-nav iframe {
-  position: relative;
-  top: -0.5em;
-  height: 30px;
-  width: 16em;
-  border: none;
-  margin: 0;
-  margin-bottom: -1.35em;
-  padding: 0;
-}
-#webmaker-nav iframe.loggedin {
-  width: 7em!important;
 }
