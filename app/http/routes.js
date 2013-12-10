@@ -6,7 +6,8 @@ module.exports = function( http, userHandle ){
       env = require( "../../config/environment" ),
       routes = {
         site: require( "./controllers/site" ),
-        user: require( "./controllers/user" )( userHandle )
+        user: require( "./controllers/user" )( userHandle ),
+        persona: require( "./controllers/persona" )( userHandle )
       },
       userList = env.get( "ALLOWED_USERS" ),
       authMiddleware = basicAuth( function( user, pass ) {
@@ -117,6 +118,9 @@ module.exports = function( http, userHandle ){
   http.get( "/account", csrf, routes.site.account );
   http.post( "/account/delete", csrf, checkPersona, routes.user.del );
   http.put( "/account/update", csrf, checkPersona, filterAccountUpdates, routes.user.update );
+
+  // Public verifiers
+  http.get( "/persona/verify", routes.persona.verify );
 
   // Resources
   http.get( "/js/sso-ux.js", routes.site.js( "sso-ux") );
