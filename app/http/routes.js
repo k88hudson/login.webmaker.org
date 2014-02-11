@@ -138,6 +138,23 @@ module.exports = function( http, userHandle ){
   http.options( "/user", allowCSRFHeaders );
   http.options( "/user/*", allowCSRFHeaders );
 
+  // The new hotness
+  var audience_whitelist = env.get( "ALLOWED_DOMAINS" ).split( " " );
+  var middleware = require("./middleware");
+
+  http.post(
+    "/api/user/authenticate",
+    middleware.personaFilter( audience_whitelist ),
+    middleware.personaVerifier,
+    routes.user.getByEmail
+  );
+  http.post(
+    "/api/user/create",
+    middleware.personaFilter( audience_whitelist ),
+    middleware.personaVerifier,
+    routes.user.create
+  );
+
   // Devops
   http.get( "/healthcheck", routes.site.healthcheck );
 };
