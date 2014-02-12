@@ -40,12 +40,22 @@ module.exports.personaVerifier = function(req, res, next) {
       });
     }
 
-    //TODO GROSS
-    // Format used by routes.user.getByEmail()
-    req.params = [ email ];
-    // Format used by routes.user.create()
-    req.body.email = email;
-
-    next();
+    res.locals.email = email;
+    process.nextTick(next);
   });
+};
+
+module.exports.sendBSDSub = function(req, res, next) {
+  process.nextTick(next);
+};
+
+module.exports.updateLastLoggedIn = function(User) {
+  return function(req, res, next) {
+    User.updateUser( res.locals.email, {
+      lastLoggedIn: new Date()
+    }, function( err ) {
+      //TODO do something useful if this error happens
+      process.nextTick(next);
+    });
+  };
 };

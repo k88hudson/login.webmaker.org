@@ -6,7 +6,8 @@ module.exports = function( http, userHandle ){
       env = require( "../../config/environment" ),
       routes = {
         site: require( "./controllers/site" ),
-        user: require( "./controllers/user" )( userHandle )
+        user: require( "./controllers/user" )( userHandle ),
+        user2: require( "./controllers/user2" )
       },
       userList = env.get( "ALLOWED_USERS" ),
       authMiddleware = basicAuth( function( user, pass ) {
@@ -146,13 +147,17 @@ module.exports = function( http, userHandle ){
     "/api/user/authenticate",
     middleware.personaFilter( audience_whitelist ),
     middleware.personaVerifier,
-    routes.user.getByEmail
+    routes.user2.authenticateUser( userHandle ),
+    middleware.updateLastLoggedIn( userHandle ),
+    routes.user2.outputUser
   );
   http.post(
     "/api/user/create",
     middleware.personaFilter( audience_whitelist ),
     middleware.personaVerifier,
-    routes.user.create
+    routes.user2.createUser( userHandle ),
+    middleware.sendBSDSub,
+    routes.user2.outputUser
   );
 
   // Devops
