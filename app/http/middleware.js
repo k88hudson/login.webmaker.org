@@ -45,8 +45,30 @@ module.exports.personaVerifier = function(req, res, next) {
   });
 };
 
+var hyperquest = require("hyperquest");
+var querystring = require("querystring");
+
 module.exports.sendBSDSub = function(req, res, next) {
-  process.nextTick(next);
+  if (!req.body.mailingList) {
+    return process.nextTick(next);
+  }
+
+  var post = hyperquest.post({
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    uri: "https://sendto.mozilla.org/page/s/webmaker"
+  }, function(err, response) {
+    //TODO do something useful if anything happens
+    process.nextTick(next);
+  });
+
+  var signup = querystring.stringify({
+    "custom-1216": 1,
+    email: res.locals.email
+  });
+
+  post.end(new Buffer(signup));
 };
 
 module.exports.updateLastLoggedIn = function(User) {
