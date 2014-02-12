@@ -28,19 +28,19 @@ module.exports.createUser = function(User) {
   return function(req, res, next) {
     var userInfo = {
       email: res.locals.email,
-      username: req.body.username
+      username: req.body.user.username
     };
 
     User.createUser(userInfo, function(err, user) {
       if (err) {
-        return res.json({
+        return next({
           "error": "Login database error",
           "login_error": err.toString()
         });
       }
 
       if (!user) {
-        return res.json({
+        return next({
           "error": "Login database error",
           "login_error": "Failed to create user"
         });

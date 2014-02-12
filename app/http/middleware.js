@@ -49,7 +49,7 @@ var hyperquest = require("hyperquest");
 var querystring = require("querystring");
 
 module.exports.sendBSDSub = function(req, res, next) {
-  if (!req.body.mailingList) {
+  if (!req.body.user.mailingList) {
     return process.nextTick(next);
   }
 
