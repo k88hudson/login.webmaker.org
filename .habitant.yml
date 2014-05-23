@@ -1,0 +1,103 @@
+NODE_ENV:
+  default: "development"
+  description: "Node environment. Use 'development' for dev, '' for prod"
+
+PORT:
+  default: 3000
+  description: "Port"
+
+ALLOWED_DOMAINS:
+  default: "*"
+  description: "The space-separated list of origins (https?://host[:port]) that are permitted to create and authenticate users. Use wildcard (*) for all domains"
+  required: true
+
+ALLOWED_USERS:
+  default: "testuser:password"
+  description: "Basic auth for Webmaker user api"
+  required: true
+
+APP_HOSTNAME:
+  default: "http://localhost:3000"
+  description: "The URL on which this app is running, including port"
+  required: true
+
+LOGINAPI:
+  default: "http://testuser:password@localhost:3000"
+  description: "Login API access point including basic auth (user and password)"
+  required: true
+
+SESSION_SECRET:
+  default: "dummy secret value"
+  description: "A secret string used to sign Session cookies"
+  required: true
+
+SUPPORTED_LANGS:
+  default: '[ "*" ]'
+  description: "i18n Language Support"
+  required: true
+
+WEBMAKERORG:
+  default: "http://localhost:7777"
+  description: "Hostname for the webmaker.org server"
+  required: true
+
+PROFILE:
+  default: ".makes.org"
+  description: "domain for user profile page"
+  required: true
+
+# Hatchet
+AWS_ACCESS_KEY_ID:
+  description: "AWS credentials used for hatchet"
+AWS_SECRET_ACCESS_KEY:
+  description: "AWS credentials used for hatchet"
+HATCHET_APP_NAME:
+  description: "See https://github.com/mozilla/sawmill"
+HATCHET_QUEUE_REGION:
+  description: "See https://github.com/mozilla/sawmill"
+HATCHET_QUEUE_URL:
+  description: "See https://github.com/mozilla/sawmill"
+
+# Database config details for sequelize
+DBOPTIONS_DIALECT:
+  default: "sqlite"
+  description: "Should be 'sqlite' or 'mysql'"
+DBOPTIONS_LOGGING:
+  description: "Sequelize logging"
+  default: false
+
+# sqlite)
+DB_DATABASE:
+  default: "local_webmakers"
+  description: "Sqlite: database name"
+DBOPTIONS_STORAGE:
+  description: "Sqlite: filename"
+  default: "loginusers.sqlite"
+
+# (mysql)
+DB_HOST:
+  description: "Mysql: Hostname. For local dev, probably localhost"
+DB_USERNAME:
+  description: "Mysql: For local dev, probably root"
+DB_PASSWORD:
+  description: "Mysql: For local dev, probably ''"
+DB_DATABASE:
+  description: "Mysql: Database name. You should create a db in mysql"
+DBOPTIONS_PORT:
+  default: 3306
+  description: "Mysql: Port for mysql. Probably 3306"
+
+# Production stuff
+FORCE_SSL:
+  default: false
+  description: "Is this server running behind an SSL-enabled load-balancer?"
+GA_ACCOUNT:
+  description: "Google analytics, for production"
+GA_DOMAIN:
+  description: "Google analytics, for production"
+STATSD_HOST:
+  description: "statsd metrics collection. If the following are left empty, no stats will be collected or sent to a server. Only STATSD_HOST and STATSD_PORT are required. STATSD_PREFIX is an optional prefix for all stats (defaults to 'development.login' or 'production.login' if left blank)."
+STATSD_PORT:
+  description: "statsd metrics collection. If the following are left empty, no stats will be collected or sent to a server. Only STATSD_HOST and STATSD_PORT are required. STATSD_PREFIX is an optional prefix for all stats (defaults to 'development.login' or 'production.login' if left blank)."
+STATSD_PREFIX:
+  description: "statsd metrics collection. If the following are left empty, no stats will be collected or sent to a server. Only STATSD_HOST and STATSD_PORT are required. STATSD_PREFIX is an optional prefix for all stats (defaults to 'development.login' or 'production.login' if left blank)."
